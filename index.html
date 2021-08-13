@@ -1,0 +1,1529 @@
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no" />
+		<title>My Story Map Shortlist</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.theme.default.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://code.jquery.com/ui/jquery-ui-git.css">
+		<link rel="stylesheet" href="https://js.arcgis.com/4.5/esri/themes/light/main.css">
+		<link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
+		<link rel="shortcut icon" href="http://weboctopus.net/mXTUh276/heart-pink-love.ico"><!---->
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+		crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<script src="https://js.arcgis.com/4.5"></script>
+		<style>
+			
+			body, html {
+				height: 100%;
+				background: radial-gradient(circle farthest-corner at 200px 0, #414141, #000);
+    			background-position: top left;
+    			font-family: 'Permanent Marker', cursive;
+    		}
+
+			.container-fluid {
+				position: relative;
+				top: 50px;
+        		top: 50px;
+				overflow-y: scroll; /* Add vertical scrollbar */
+				height: 100%;
+			}
+
+			/* https://codepen.io/lovefield/pen/vEvqZV  */
+
+			.bg_heart{
+				position:relative;
+				top:0;
+				left:0;
+				width:100%;
+				height:100%;
+				overflow:hidden;
+				z-index: 999;
+			}
+
+			.heart{
+				position:absolute;
+				top:-50%;-
+				webkit-transform:rotate(-45deg);
+				-moz-transform:rotate(-45deg);
+				-m-transform:rotate(-45deg);
+				transform:rotate(-45deg)
+			}
+			.heart:before{
+				position:absolute;
+				top:-50%;
+				left:0;
+				display:block;
+				content:"";
+				width:100%;
+				height:100%;
+				background:inherit;
+				border-radius:100%;
+			}
+			.heart:after{position:absolute;
+				top:0;
+				right:-50%;
+				display:block;
+				content:"";
+				width:100%;
+				height:100%;
+				background:inherit;
+				border-radius:100%;
+			}
+
+			@-webkit-keyframes love {
+			  0%{top:110%}
+			}
+			@-moz-keyframes love {
+			  0%{top:110%}
+			}
+			@-ms-keyframes love {
+			  0%{top:110%}
+			}
+			@keyframes love {
+			  0%{top:110%}
+			}
+
+			#sceneView {
+				width: 100%;
+				height: 500px;
+				margin-top: 10px;
+				border-radius: 5px;
+				position: relative;
+			}
+
+			figure {
+				display: inline-block;
+				width: 140px;
+				height: 140px;
+				background-color: #FFF;
+				border-radius: 5px;
+				margin: 5px;
+			}
+
+			figure > img {
+				border-radius: 5px;
+				width: 130px;
+				height: 130px;
+				margin: 5px;
+				background-size: cover;
+			}
+
+			.figShadow {
+				box-shadow: 1px 1px 3px #000;
+			}
+
+			.item > img {
+				border-radius: 8px;
+			}
+
+			.carousel-wrap {
+				padding: 10px;
+				width: 100%;
+				position: relative;
+			}
+
+			.owl-carousel {
+				z-index: 1;/**/
+				position: static;
+			}
+			
+			.owl-carousel .item {
+				position: relative;
+				-webkit-backface-visibility: hidden;
+			}
+
+			.owl-nav > div {
+				margin-top: -26px;
+				position: absolute;
+				top: 50%;
+				color: rgb(185,185,185);
+			}
+
+			.owl-nav i {
+				font-size: 38px;
+			}
+
+			.owl-nav .owl-prev {
+				left: -10px;
+				color: #d7d7d7;
+			}
+
+			.owl-nav .owl-next {
+				right: -10px;
+			}
+
+			.esri-popup__main-container {
+				border-radius: 5px;
+				max-height: none !important; 
+			}
+
+			.esri-popup__main-container > article {
+				overflow: visible;
+			}
+			
+			.esri-widget table tr th {
+				width: 20%;
+			}
+
+			.esri-popup-renderer__content-element {
+				padding-bottom: 10px !important;
+			}
+
+			.esri-popup-renderer__field-data {
+				text-align: center;
+			}
+			
+			.modal-backdrop.in {
+			    opacity: 0.9 !important;
+			}
+			
+			.footer {
+			    position: absolute;
+			    bottom: 0;
+			    width: 100%;
+			    height: 40px;
+			    background-color: black;
+			    border-top: 2px solid #222;
+			    z-index: 1;/**/
+			    text-align: center;
+			    padding-top: 10px;
+			    text-shadow: 0 0 5px #fff, 0 0 10px #ff2d95,  0 0 11px #ff2d95, 0 0 13px #ff2d95, 0 0 15px #ff2d95;
+			 }
+
+			.header {
+			    position: absolute;
+			    top: 0;
+			    width: 100%;
+			    height: 50px;
+			    background-color: black;
+			    border-bottom: 2px solid #222;
+			    z-index: 1;
+			    text-align: center;
+			    font-size: 34px;
+			    text-shadow: 1px 2px 0 rgba(0,0,0,0.4),-1px -2px 0 rgba(255,45,149,1);
+			}
+
+			#placeDesc {
+				position: absolute;
+				top: 13px;
+				right: 10px;
+				background-color: rgba(0,0,0,0.7);
+				color: white;
+				border-radius: 5px;
+				padding: 10px;
+				display: none;
+
+			}
+
+			.div-progress {
+				position: absolute;
+				top: 13px;
+				left: 10px;
+				width: 20%;
+				display: none;
+				border-style: solid;
+				border-width: 12px;
+				border-color: rgba(0, 0, 0, 0.7);
+				border-radius: 5px;
+			}
+
+			.progress {
+				margin-bottom: 0;
+				border-radius: 0;
+			}
+
+			@media screen and (max-width: 640px) {
+			  .header {
+			    font-size: 16px;
+			  }
+			  #tabs {
+			  	width: 100%;
+			  }
+			 figure {
+			  	width: 65px;
+				height: 65px;
+			  }
+			  figure > img {
+				width: 55px;
+				height: 60px;
+			  }
+			  .carousel-wrap {
+			  	display: none;
+			  }
+			  #sceneView {
+			  	height: 300px;
+			  }
+			}
+
+			@media screen and (min-width: 1600px) {
+			  #tabs {
+			  	width: 70%;
+			  }
+			}
+      
+			.text-muted {
+			 	color: rgb(255, 255, 255);
+			}
+
+      		.ui-widget.ui-widget-content {
+			    width: 85%;
+			    text-align: center;
+			}
+
+			.line {
+				position:absolute;
+				width: 0;
+				height: 7px;
+				background-color: #005ce6;/**/
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+			}
+
+			.ui-corner-top  {
+				border-top-right-radius: 0px !important;
+				border-top-left-radius: 0px !important;
+			}
+
+			.ui-tabs .ui-tabs-nav li {
+				padding: 5px 10px;
+			}
+
+			.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+				padding: 6px 10px !important; 
+			}
+
+			.ui-state-active {
+				background: #f6f6f6 !important;
+				border: none !important;/**/
+			}
+
+			.ui-state-default a, .ui-state-default a:link {
+				color: #A4A4A4;
+			}
+
+			.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
+				color: #454545 !important;
+			}
+
+			#player {
+				position: absolute;
+				display: inline-block;
+				right: 30px;
+    			top: 10px;
+    		}
+
+			.btn-custom:hover, .btn-custom:active, .btn-custom:focus {
+			    cursor: pointer;
+			    opacity: 0.5;
+			    color: white;
+			}
+
+			.btn-custom {
+			    background-color: black;
+			    color: white;
+			    transition-property: background, opacity;
+			    transition-duration: 0.5s;
+			}
+			
+			/*!
+			* animate.css -http://daneden.me/animate
+			* Version - 3.5.2
+			* Licensed under the MIT license - http://opensource.org/licenses/MIT
+			*
+			* Copyright (c) 2017 Daniel Eden
+			*/
+			.animated {
+				animation-duration: 1s;
+				animation-fill-mode: both;
+			}
+
+			@keyframes flipInX {
+			  from {
+			    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+			    transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+			    -webkit-animation-timing-function: ease-in;
+			    animation-timing-function: ease-in;
+			    opacity: 0;
+			  }
+
+			  40% {
+			    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+			    transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+			    -webkit-animation-timing-function: ease-in;
+			    animation-timing-function: ease-in;
+			  }
+
+			  60% {
+			    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+			    transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+			    opacity: 1;
+			  }
+
+			  80% {
+			    -webkit-transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+			    transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+			  }
+
+			  to {
+			    -webkit-transform: perspective(400px);
+			    transform: perspective(400px);
+			  }
+			}
+
+			.flipInX {
+				-webkit-backface-visibility: visible !important;
+				backface-visibility: visible !important;
+				animation-name: flipInX;
+			}
+
+			@keyframes flash {
+				from, 50%, to {
+				opacity: 1;
+				}
+				25%, 75% {
+				opacity: 0;
+				}
+			}
+			.flash {
+				animation-name: flash;
+			}
+
+			@keyframes bounceInLeft {
+			  from, 60%, 75%, 90%, to {
+			    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+			  }
+
+			  0% {
+			    opacity: 0;
+			    transform: translate3d(-3000px, 0, 0);
+			  }
+
+			  60% {
+			    opacity: 1;
+			    transform: translate3d(25px, 0, 0);
+			  }
+
+			  75% {
+			    transform: translate3d(-10px, 0, 0);
+			  }
+
+			  90% {
+			    transform: translate3d(5px, 0, 0);
+			  }
+
+			  to {
+			    transform: none;
+			  }
+			}
+
+			.bounceInLeft {
+			  animation-name: bounceInLeft;
+			}
+
+			@keyframes bounceInRight {
+			  from, 60%, 75%, 90%, to {
+			    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+			  }
+
+			  from {
+			    opacity: 0;
+			    transform: translate3d(3000px, 0, 0);
+			  }
+
+			  60% {
+			    opacity: 1;
+			    transform: translate3d(-25px, 0, 0);
+			  }
+
+			  75% {
+			    transform: translate3d(10px, 0, 0);
+			  }
+
+			  90% {
+			    transform: translate3d(-5px, 0, 0);
+			  }
+
+			  to {
+			    transform: none;
+			  }
+			}
+
+			.bounceInRight {
+			  animation-name: bounceInRight;
+			}
+
+		</style>
+
+	</head>
+
+	<body class="bg_heart">
+		
+		<header class="header animated bounceInRight">
+			<div class="container">
+				<span class="text-muted">My Story Map Shortlist</span>
+			</div>
+		</header>
+
+		<div class="container-fluid">
+			
+			<div class="row">
+
+				<div class="col col-md-5 col-lg-5 col-xl-5">
+					
+					<div id="tabs" class="animated bounceInLeft">
+					  <ul>
+					    <li id="tabParis" name="Paris" color="#005ce6">
+					    	<div class="line" style="width: 100%;"></div><!---->
+					    	<a href="#tabs-1" disabled>Paris</a>
+					    </li>
+					    <li id="tabReunion" name="La Réunion" color="#ED7F10">
+					    	<div class="line"></div><!---->
+					    	<a href="#tabs-2">La Réunion</a>
+					    </li>
+					    <li id="tabAilleurs" name="Ailleurs" color="#c500ff">
+					    	<div class="line"></div><!---->
+					    	<a href="#tabs-3">Ailleurs</a>
+					    </li>
+					  </ul>
+					  <div id="player" class="">
+						<button type="button" id="button_play" class="btn btn-custom">
+					      <i class="fa fa-play"></i>
+					    </button>
+					    <!--<button type="button" id="button_stop" class="btn btn-custom" disabled="disabled">
+					      <i class="fa fa-stop"></i>
+					    </button>-->
+					  </div>
+					  <div id="tabs-1">
+				   			<figure class="figShadow">
+								<img src="http://weboctopus.net/mXTUh276/paris-05.jpg" alt="paris-05.jpg" objectid="8">
+							</figure>
+							<figure class="figShadow">
+								<img src="http://weboctopus.net/mXTUh276/paris-01.jpg" alt="paris-01.jpg" objectid="12">
+							</figure>
+							<figure class="figShadow">
+								<img src="http://weboctopus.net/mXTUh276/paris-07.jpg" alt="paris-07.jpg" objectid="35">
+							</figure>
+							<figure class="figShadow">
+								<img src="http://weboctopus.net/mXTUh276/paris-11.jpg" alt="paris-11.jpg" objectid="36">
+							</figure>
+							<figure class="figShadow">
+								<img src="http://weboctopus.net/mXTUh276/paris-12.jpg" alt="paris-12.jpg" objectid="13">
+							</figure>
+							<figure class="figShadow">
+								<img src="http://weboctopus.net/mXTUh276/paris-02.jpg" alt="paris-02.jpg" objectid="30">
+							</figure>
+							<figure class="figShadow">
+								<img src="http://weboctopus.net/mXTUh276/paris-04.jpg" alt="paris-04.jpg" objectid="15">
+							</figure>
+							<figure class="figShadow">
+								<img src="http://weboctopus.net/mXTUh276/paris-10.jpg" alt="paris-10.jpg" objectid="16">
+							</figure>
+							<figure class="figShadow">
+								<img src="http://weboctopus.net/mXTUh276/paris-03.jpg" alt="paris-03.jpg" objectid="18">
+							</figure>
+					  </div>
+					  <div id="tabs-2">
+					    <figure class="figShadow">
+							<img src="http://weboctopus.net/mXTUh276/reunion-02.jpg" alt="reunion-02.jpg" objectid="27">
+						</figure>
+						<figure class="figShadow">
+							<img src="http://weboctopus.net/mXTUh276/reunion-03.jpg" alt="reunion-03.jpg" objectid="9">
+						</figure>
+						<figure class="figShadow">
+							<img src="http://weboctopus.net/mXTUh276/reunion-04.jpg" alt="reunion-04.jpg" objectid="21">
+						</figure>
+						<figure class="figShadow">
+							<img src="http://weboctopus.net/mXTUh276/reunion-05.jpg" alt="reunion-05.jpg" objectid="22">
+						</figure>
+						<figure class="figShadow">
+								<img src="http://weboctopus.net/mXTUh276/reunion-10.jpg" alt="reunion-10.jpg" objectid="25">
+						</figure><!---->
+						<figure class="figShadow">
+							<img src="http://weboctopus.net/mXTUh276/reunion-09.jpg" alt="reunion-09.jpg" objectid="5">
+						</figure>
+						<figure class="figShadow">
+								<img src="http://weboctopus.net/mXTUh276/reunion-01.jpg" alt="reunion-01.jpg" objectid="19">
+						</figure>
+						<figure class="figShadow">
+							<img src="http://weboctopus.net/mXTUh276/reunion-07.jpg" alt="reunion-07.jpg" objectid="20">
+						</figure>
+						<figure class="figShadow">
+							<img src="http://weboctopus.net/mXTUh276/reunion-12.jpg" alt="reunion-12.jpg" objectid="33">
+						</figure>
+					  </div>
+					  <div id="tabs-3">
+					    <figure class="figShadow">
+							<img src="http://weboctopus.net/mXTUh276/ailleurs-01.jpg" alt="ailleurs-01.jpg" objectid="24">
+						</figure>
+						<figure class="figShadow">
+							<img src="http://weboctopus.net/mXTUh276/ailleurs-02.jpg" alt="ailleurs-02.jpg" objectid="29">
+						</figure>
+						<figure class="figShadow">
+							<img src="http://weboctopus.net/mXTUh276/ailleurs-05.jpg" alt="ailleurs-05.jpg" objectid="37">
+						</figure>
+						<figure class="figShadow">
+							<img src="http://weboctopus.net/mXTUh276/ailleurs-03.jpg" alt="ailleurs-03.jpg" objectid="1">
+						</figure>
+						<figure class="figShadow">
+							<img src="http://weboctopus.net/mXTUh276/ailleurs-04.jpg" alt="ailleurs-04.jpg" objectid="39">
+						</figure>
+						<figure class="figShadow">
+							<img src="http://weboctopus.net/mXTUh276/ailleurs-06.jpg" alt="ailleurs-06.jpg" objectid="41">
+						</figure><!---->
+					  </div>
+					</div>
+
+				</div> <!-- column tabs  -->
+
+				<div class="col col-md-7 col-lg-7 col-xl-7" id="map-column">  <!-- map + basemap slider  -->
+				
+					<div class="row">
+						
+						<div class="col col-md-12 col-lg-12 col-xl-12" > <!-- basemap slider -->
+						
+							<div class="carousel-wrap">
+								<div class="owl-carousel">
+									<div class="item" id="satellite">
+										<img src="https://www.arcgis.com/sharing/rest/content/items/95acf7dbe25542088058a13f621047ac/info/thumbnail/tempimagery.jpg"/>
+									</div>
+									<div class="item" id="hybrid">
+										<img src="https://www.arcgis.com/sharing/rest/content/items/f1aa737df8cb43a18f316dc38c673a6b/info/thumbnail/imagery_labels.jpg"/>
+									</div>
+									<div class="item" id="streets">
+										<img src="https://www.arcgis.com/sharing/rest/content/items/0ffccdb3e3ae4c8591133525fa0f2bd8/info/thumbnail/world_street_map.jpg"/>
+									</div>
+									<div class="item" id="topo">
+										<img src="https://www.arcgis.com/sharing/rest/content/items/3139410d263c471ca0c58a74d0aa6b40/info/thumbnail/topo_map_2.jpg"/>
+									</div>
+									<div class="item" id="osm">
+										<img src="https://www.arcgis.com/sharing/rest/content/items/93ec3a7f2129410685ed350c917fe33b/info/thumbnail/temposm.jpg"/>
+									</div>
+									<div class="item" id="dark-gray">
+										<img src="https://www.arcgis.com/sharing/rest/content/items/bf9c0239c03246b3b1b4e8ef55a9f061/info/thumbnail/DGCanvasBase.png"/>
+									</div>
+									<div class="item" id="gray">
+										<img src="https://www.arcgis.com/sharing/rest/content/items/e9eaeb01c2e74d109657a1398d8deca0/info/thumbnail/light_gray_canvas.jpg"/>
+									</div>
+									<div class="item" id="national-geographic">
+										<img src="https://www.arcgis.com/sharing/rest/content/items/3d41c4f0e8a94064b37c85b5c0a7b0f1/info/thumbnail/natgeo.jpg"/>
+									</div>
+                  					<div class="item" id="oceans">
+										<img src="https://www.arcgis.com/sharing/rest/content/items/8d2538ddeae0401a8a6dc5dbbc4dfd35/info/thumbnail/tempoceans.jpg"/>
+									</div>
+									<div class="item" id="terrain">
+										<img src="https://www.arcgis.com/sharing/rest/content/items/3ada399ed3114c038df8d21e14a746cc/info/thumbnail/terrain_labels.jpg"/>
+									</div>
+								</div>
+							</div><!-- --> <!-- en basemap slider -->
+						</div> <!-- end column basemap slider -->
+							
+					</div> <!-- end row basemap slider -->
+						
+						<div class="row" id="row-map"> <!-- row map -->
+							<div class="col col-md-12 col-lg-12 col-xl-12 animated bounceInRight">
+								<div id="sceneView">
+
+									<span id="placeDesc"></span><!---->
+									<div class="div-progress">
+										
+										<div class="progress">
+										  	<div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+										</div>
+
+									</div>
+									
+								</div> <!-- the map -->
+
+							</div>
+						</div> <!-- end row map -->
+										
+				</div> <!-- end column map + basemap slider -->
+		
+			</div> <!-- end row -->
+
+		</div> <!-- end container -->
+
+		<footer class="footer animated bounceInLeft">
+	      <div class="container">
+	        <span class="text-muted">By Bertrand Laurancin</span>
+	      </div>
+	    </footer>
+
+		<!-- Modal -->
+		<div class="modal" id="paris-01" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/paris-01.jpg" alt="paris-01.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="paris-05" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/paris-05.jpg" alt="paris-05.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="paris-02" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/paris-02.jpg" alt="paris-02.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="paris-03" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/paris-03.jpg" alt="paris-03.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="paris-04" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/paris-04.jpg" alt="paris-04.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="paris-07" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/paris-07.jpg" alt="paris-07.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="paris-10" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/paris-10.jpg" alt="paris-10.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer">
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="paris-11" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/paris-11.jpg" alt="paris-11.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="paris-12" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/paris-12.jpg" alt="paris-12.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="reunion-01" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/reunion-01.jpg" alt="reunion-01.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="reunion-02" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/reunion-02.jpg" alt="reunion-02.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="reunion-03" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		     </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/reunion-03.jpg" alt="reunion-03.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="reunion-04" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		     </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/reunion-04.jpg" alt="reunion-04.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="reunion-05" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/reunion-05.jpg" alt="reunion-05.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="reunion-07" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/reunion-07.jpg" alt="reunion-07.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="reunion-09" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/reunion-09.jpg" alt="reunion-09.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+		
+		<div class="modal" id="reunion-10" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/reunion-10.jpg" alt="reunion-10.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="reunion-12" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/reunion-12.jpg" alt="reunion-12.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="ailleurs-01" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/ailleurs-01.jpg" alt="ailleurs-01.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="ailleurs-02" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/ailleurs-02.jpg" alt="ailleurs-02.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="ailleurs-05" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/ailleurs-05.jpg" alt="ailleurs-05.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="ailleurs-03" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/ailleurs-03.jpg" alt="ailleurs-03.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="ailleurs-04" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/ailleurs-04.jpg" alt="ailleurs-04.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal" id="ailleurs-06" tabindex="-1">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		      </div>
+		      <div class="modal-body">
+		        <img src="http://weboctopus.net/mXTUh276/ailleurs-06.jpg" alt="ailleurs-06.jpg" width="100%">
+		      </div>
+		      <div class="modal-footer"></div>
+		    </div>
+		  </div>
+		</div><!---->
+		
+		
+		<script>
+
+			$().ready( function() {
+
+				/* https://codepen.io/lovefield/pen/vEvqZV */
+
+				let love = setInterval(function(){
+
+					let r_num = Math.floor(Math.random() * 40) + 1;
+					let r_size = Math.floor(Math.random() * 65) + 10;
+					let r_left = Math.floor(Math.random() * 100) + 1;
+					let r_bg = Math.floor(Math.random() * 25) + 100;
+					let r_time = Math.floor(Math.random() * 5) + 5;
+					  
+					$('.bg_heart').append("<div class='heart' style='width:"+r_size+"px;height:"+r_size+"px;left:"+r_left+"%;background:rgba(255,"+(r_bg-25)+","+r_bg+",1);-webkit-animation:love "+r_time+"s ease;-moz-animation:love "+r_time+"s ease;-ms-animation:love "+r_time+"s ease;animation:love "+r_time+"s ease'; 'opacity: 0.7'></div>");
+					  
+					$('.bg_heart').append("<div class='heart' style='width:"+(r_size-10)+"px;height:"+(r_size-10)+"px;left:"+(r_left+r_num)+"%;background:rgba(255,"+(r_bg-25)+","+(r_bg+25)+",1);-webkit-animation:love "+(r_time+5)+"s ease;-moz-animation:love "+(r_time+5)+"s ease;-ms-animation:love "+(r_time+5)+"s ease;animation:love "+(r_time+5)+"s ease' ; 'opacity: 0.7'></div>");
+					  
+					$('.heart').each(function(){
+					    let top = $(this).css("top").replace(/[^-\d\.]/g, '');
+					    let width = $(this).css("width").replace(/[^-\d\.]/g, '');
+					    if(top <= -100 || width >= 150){
+					      $(this).detach();
+					    }
+					});
+
+				}, 500);/**/
+
+				function stopLove() {clearInterval(love);}
+
+				setTimeout(stopLove, 8000);
+
+				//let figures = $("figure");
+				let owl = $(".owl-carousel");
+						
+				owl.addClass("bounceInRight animated");
+							
+				owl.owlCarousel({
+					loop: true,
+					margin: 15,
+					nav: true,
+					navText: [
+					"<i class='fa fa-caret-left'></i>",
+					"<i class='fa fa-caret-right'></i>"
+					],
+					autoWidth: true,
+					startPosition: 0,
+					fluidSpeed: true,
+					dragEndSpeed: true,
+				});
+
+				let tabs = $( "#tabs" ).tabs();
+		    	tabs.find(".ui-tabs-nav").sortable( { axis: "x", stop: function() { tabs.tabs("refresh") } } );
+
+
+		   		$(".item > img").each(function() {
+					$(this).click(function() {
+						$(this).addClass("flash animated");
+					});
+				});
+
+			})	
+			
+		</script>
+		
+		<script>
+		
+			let sceneView;
+			let divProgress = document.getElementsByClassName("div-progress")[0];
+			let extentParis = [2.3400771617891882, 48.857670532870394];
+			let zoomParis = 12;
+			let extentReunion = [55.51939845083782, -21.152135968323005];
+			let zoomReunion = 10;
+			let extentAilleurs = [6.558827161788094, 38.471012107691045];
+			let zoomAilleurs = 2;
+			let layer;
+			let template;
+			let placeDescSpan = document.querySelector("#placeDesc");
+			let button_play = document.getElementById("button_play");
+			let button_stop = document.getElementById("button_stop");
+			// these two highlight handlers are used for selection and hovering over features
+			let highlightSelect, highlightHover;
+			let hoverPromise;
+			let figures = document.getElementsByTagName("figure");
+			let lines = document.getElementsByClassName("line");
+			let tabParis = document.querySelector("#tabParis");
+			let tabReunion = document.querySelector("#tabReunion");
+			let tabAilleurs = document.querySelector("#tabAilleurs");
+			let photos = document.querySelectorAll("figure > img");
+			let tabsEvent = document.querySelector("#tabs");
+			let mapRow =  document.querySelector("#row-map");
+		   
+			require( [	"esri/Map",
+						"esri/views/SceneView",
+						"esri/request",
+						"esri/layers/FeatureLayer",
+						"esri/config",
+						],
+
+			function(Map, SceneView, esriRequest, FeatureLayer, esriConfig)
+			{
+				function scaleFig() {
+					let this_ = this;
+					this_.style.transform = "scale(1.5)";
+					this_.className = "";
+					this_.style.cursor = "pointer";
+				}
+
+				function unScaleFig() {
+					let this_ = this;
+					this_.style.transform = "none";
+					this_.className = "figShadow";
+					this_.style.cursor = "";
+				}
+
+				for (let i = 0, len = figures.length; i < len; i++) {
+		    		let fig = figures[i];
+		    		fig.addEventListener( "mouseover", scaleFig );
+					fig.addEventListener( "mouseout",  unScaleFig );
+		    	}/**/
+
+				function flipInXFigures(figures) {
+					for (let i = 0, len = figures.length; i < len; i++) {
+			    		let fig = figures[i];
+			    		fig.classList.add("flipInX", "animated");
+						setTimeout(function() { fig.classList.remove("flipInX" ,"animated"); }, 500 );
+			    	}
+			    	
+				}
+
+				function animateTabFct(tab, color, extent, zoom) {
+					
+					let idTab = tab.getAttribute("aria-controls");
+		    		let figures = document.querySelectorAll("#" + idTab + " > figure");
+		    		placeDescSpan.style.display = "none";
+		    		flipInXFigures(figures);
+		    		for (let i = 0, len = lines.length; i < len; i++) {
+
+					    lines[i].style.display = "none";
+
+					}
+		    		let currentLine = tab.firstElementChild;
+		    		currentLine.style.width = 0;
+		    		currentLine.style.display = "block";
+					currentLine.style.backgroundColor = color;
+		    		let $line = $(currentLine);
+		    		$line.animate({'width':'100%'}, 500);
+		    		let place = "Tab=" + "'" + tab.getAttribute("name") + "'";
+		    		layer.definitionExpression = place;
+					sceneView.goTo({ center: extent, zoom: zoom, tilt: 0, heading: 0 }, { duration: 7000, easing: "in-out-cubic" });/**/
+
+		    	}
+
+		    	// set highlightOptions like color and fillOpacity
+		        let highlightOptions = {
+		          color: [255, 241, 58],
+		          fillOpacity: 0.4
+		        } 
+		        let environment =  {
+		          atmosphereEnabled: true,
+		          atmosphere: {
+		            quality: "high"
+		          }
+		        }
+		        let currentBasemap = new Map( { basemap: "hybrid",  ground: "world-elevation" } );
+				let viewOptions = { container: "sceneView", highlightOptions: highlightOptions, environment: environment, map: currentBasemap, center: extentParis, zoom: zoomParis };
+				sceneView = new SceneView ( viewOptions );
+
+				template = {
+					title: "<font color='#323232'>{Tab}",
+					content: 
+					[
+						{
+				           type: "fields",
+				            fieldInfos: [{
+				              fieldName: "place",
+				              visible: true,
+				              label: "Lieu"
+				            }]
+				          },
+				          {
+				          	type: "text",
+				          	text:  "<table><tbody><tr style='background-color: #d7d7d7, color: #464646;''><th class='esri-popup-renderer__field-header' style='vertical-align: middle;'>Photo</th><td class='esri-popup-renderer__field-data' style='text-align:center;''><img src='{Img}' width='85px' height='85px' style='border-radius: 5px; cursor: pointer;' data-toggle='modal' data-target='{Modal}'></img></td></tr></tbody></table>"
+				          }
+				    ]
+		        }
+
+				layer = new FeatureLayer( { url: "https://services.arcgis.com/OMbfIFNCWRclU5sp/arcgis/rest/services/plmpl/FeatureServer/0", outFields: ["*"], popupTemplate: template/**/} );
+				sceneView.map.add(layer);
+
+				layer.then(function() {
+					tabParis.addEventListener("click", function()  { animateTabFct(this, "#005ce6", extentParis, zoomParis) });
+					tabReunion.addEventListener("click", function() { animateTabFct(this, "#ED7F10", extentReunion, zoomReunion) });
+		    		tabAilleurs.addEventListener("click", function() { animateTabFct(this, "#c500ff", extentAilleurs, zoomAilleurs) });
+				})/**/
+
+				sceneView.popup.actions.items[0].visible = false;
+				sceneView.popup.autoCloseEnabled = true;
+				
+				sceneView.popup.dockOptions = {
+				  // Disables the dock button from the popup
+				  buttonEnabled: false,
+				  // Ignore the default sizes that trigger responsive docking
+				  breakpoint: false,
+				};
+
+				// Change basemap onclick button
+				let basemaps = document.querySelectorAll(".item");
+				for (let i = 0, len = basemaps.length; i < len; i++) {
+					let basemap = basemaps[i];
+					basemap.addEventListener("click", function() {
+						currentBasemap.basemap = this.id;
+					});
+				};
+
+				// highlight is set on the layerView, so we need to detect when the layerView is ready
+				sceneView.whenLayerView(layer).then(function(lyrView) {
+					// creates the query that will be used to obtain the features needed for the highlight
+					let queryPlaces = layer.createQuery();
+					// features that are passed in the highlight function need to have an `objectID`
+					// if the query is built using `new Query()` then `queryStations.outFields = ["objectID"]` should be set
+					
+					for (let i = 0, len = photos.length; i < len; i++) {
+						photos[i].addEventListener("click", onClick);
+			            photos[i].addEventListener("mouseover", onMouseOver);
+						photos[i].addEventListener("mouseout", onMouseOut);
+			        }
+
+			        function onClick() {
+			        	placeDescSpan.style.display = "none";
+			        	placeDescSpan.classList = "";
+			            let photoId = this.getAttribute("objectid");
+			            let place = this.getAttribute("alt");
+
+			            queryPlaces.where = "OBJECTID=" + photoId;
+			            layer.queryFeatures(queryPlaces).then(
+		              
+			            function(result) {
+			              
+			                // if a feature is already highlighted, then remove the highlight
+			                if (highlightSelect) {
+			                  highlightSelect.remove();
+			                }
+
+			                // the feature to be highlighted
+			                let feature = result.features[0];
+			                let placeDesc = feature.attributes.Place;
+			                let zoom, titl, heading;
+			                zoom = 17;
+			               
+			                if ((/^paris/).test(place)) {
+			                	titl = 0;
+			                	heading = 0;
+			                }
+			                else if ((/^reunion/).test(place)) {
+			                	titl = 80;
+			                	if (photoId == 27) {
+			                		heading = 270;
+			                		zoom = 17.7;
+			                	} else {
+				                	heading = 105;
+			                	}
+			                	
+			            	}
+			            	else {
+			            		if( photoId == 1 ) {
+			            			titl = 82.92118436024847;
+			            			heading = 208.55543599851103;
+			            			zoom = 14.666159218993604;
+			            		}
+			            		if( photoId == 24 ) {
+			            			heading = 49.19808545889211;
+			            			zoom = 15.641198763461151;
+			            			titl = 78.78057997351706;
+			            		}
+			            		if( photoId == 29 || photoId == 37 ) {
+			            			heading = 283.40406391956344;
+			            			zoom = 16.504134416737035;
+			            			titl = 78.73480543914509;
+			            		}
+			            		if( photoId == 39 ) {
+			            			heading = 0;
+			            			zoom = 17;
+			            			titl = 0;
+			            		}
+			            		if( photoId == 41 ) {
+			            			heading = 7.99528023385289;
+			            			zoom = 17.863338490865544;
+			            			titl = 79.90827805978651;
+			            		}
+							}
+
+			                // use the objectID to highlight the feature
+			                highlightSelect = lyrView.highlight(feature.attributes[
+			                  "OBJECTID"]);
+
+			                sceneView.goTo({
+			                  target: feature.geometry,
+			                  tilt: titl,/**/
+			                  zoom: zoom,
+			                  heading: heading
+
+			                }, {
+			                  duration: 5000,
+			                  easing: "in-out-cubic"
+			                });
+
+			                setTimeout(function() {
+			                	placeDescSpan.style.display = "inline";
+			                	//placeDescSpan.classList = "animated flipInX";
+					        	placeDescSpan.textContent = placeDesc;
+			                }, 4000);
+			               
+			            });
+		          	}
+
+			        function onMouseOver() {
+			           	let photoId = this.getAttribute("objectid");
+				       	let place = this.getAttribute("alt");
+				        queryPlaces.where = "OBJECTID=" + photoId;
+			            hoverPromise = layer.queryFeatures(queryPlaces);
+			            hoverPromise.then(
+			            function(result) {
+			                if (highlightHover) {
+			                  highlightHover.remove();
+			                }
+			                let feature = result.features[0];
+			                highlightHover = lyrView.highlight(feature.attributes["OBJECTID"]);
+			            });
+			        }
+
+			        function onMouseOut() {
+			          	// cancel the promise that retrieves the hovered feature in case it's not resolved yet.
+			            hoverPromise.cancel();
+			            if (highlightHover) {
+			              highlightHover.remove();
+			            }
+			        }	
+			    });	
+
+				function setProgress(pg){
+				  let pgBar = document.getElementsByClassName("progress-bar")[0];
+				  pgBar.style.width= (pg) + "%";
+				}
+
+				function stopPropagation(event) { event.stopPropagation() };
+
+				function buttonPlayPress() {
+
+					sceneView.ui.components = [ "attribution" ];
+					
+					button_play.disabled = true;
+		          	button_play.removeEventListener("click", buttonPlayPress);
+		          	
+		          	tabsEvent.addEventListener("click", stopPropagation, true);
+
+		          	layer.popupEnabled = false;
+
+		          	mapRow.addEventListener("click", stopPropagation, true);
+
+		          	divProgress.style.display = "block";
+		          	
+		          	for (let i = 0, len = figures.length; i < len; i++) {
+			    		let fig = figures[i];
+			    		fig.removeEventListener( "mouseover", scaleFig );
+						fig.removeEventListener( "mouseout",  unScaleFig );
+			    	}/**/
+
+			    	$( "#tabs" ).tabs( "option", "disabled", [ 1, 2, 3 ] );
+
+			    	let currentPhotos = document.querySelectorAll("div[aria-hidden='false'] > figure > img");
+		          	placeDescSpan.style.display = "none";
+		          	placeDescSpan.classList = "";
+		          	let x = 0;
+		          	let len = currentPhotos.length;
+		          	let z = 8000 * len;
+		          	let y = 100/len;
+		          	
+		          	sceneView.whenLayerView(layer).then(function(lyrView) {
+
+		          		for (let i = 0; i < len; i++) {
+
+		          			setTimeout(function() {
+								
+								if(i > 0 ) {
+									currentPhotos[i-1].parentElement.style.transform = "none";
+									placeDescSpan.style.display = "none";
+									placeDescSpan.classList = "";
+								}
+
+								currentPhotos[i].parentElement.style.transform = "scale(1.5)";
+															    
+								let queryPlaces = layer.createQuery();
+
+								let photoId =  currentPhotos[i].getAttribute("objectid");
+								
+				            	let place = currentPhotos[i].getAttribute("alt");
+
+					            queryPlaces.where = "OBJECTID=" + photoId;
+					            
+					            layer.queryFeatures(queryPlaces).then(
+				              
+					            function(result) {
+					              
+					                // if a feature is already highlighted, then remove the highlight
+					                if (highlightSelect) {
+					                  highlightSelect.remove();
+					                }
+
+					                // the feature to be highlighted
+					                let feature = result.features[0];
+					                let placeDesc = feature.attributes.Place;
+					                let zoom, titl, heading;
+					                zoom = 17;
+					               
+					                if ((/^paris/).test(place)) {
+					                	titl = 0;
+					                	heading = 0;
+					                }
+					                else if ((/^reunion/).test(place)) {
+					                	titl = 80;
+					                	if (photoId == 27) {
+					                		heading = 270;
+					                		zoom = 17.7;
+					                	} else {
+						                	heading = 105;
+					                	}
+					                	
+					            	}
+					            	else {
+					            		if( photoId == 1 ) {
+					            			titl = 82.92118436024847;
+					            			heading = 208.55543599851103;
+					            			zoom = 14.666159218993604;
+					            		}
+					            		if( photoId == 24 ) {
+					            			heading = 49.19808545889211;
+					            			zoom = 15.641198763461151;
+					            			titl = 78.78057997351706;
+					            		}
+					            		if( photoId == 29 || photoId == 37 ) {
+					            			heading = 283.40406391956344;
+					            			zoom = 16.504134416737035;
+					            			titl = 78.73480543914509;
+					            		}
+					            		if( photoId == 39 ) {
+					            			heading = 0;
+					            			zoom = 17;
+					            			titl = 0;
+					            		}
+					            		if( photoId == 41 ) {
+					            			heading = 7.99528023385289;
+					            			zoom = 17.863338490865544;
+					            			titl = 79.90827805978651;
+					            		}
+									}
+
+					                // use the objectID to highlight the feature
+					                highlightSelect = lyrView.highlight(feature.attributes[
+					                  "OBJECTID"]);
+
+					                sceneView.goTo({
+
+					                  target: feature.geometry,
+					                  tilt: titl,/**/
+					                  zoom: zoom,
+					                  heading: heading
+
+					                }, {
+					                  duration: 5000,
+					                  easing: "in-out-cubic"
+					                });
+					                 setTimeout(function() {
+					                	placeDescSpan.style.display = "inline";
+							        	placeDescSpan.textContent = placeDesc;
+					                }, 3000);
+					             })
+
+					            setProgress(y);
+
+								 y += 100/len;
+								
+					        },x*8000)
+			          		
+							x+=1;
+						
+						}
+
+
+			          	setTimeout(function() {
+			          			
+			          			sceneView.ui.components = [ "zoom", "navigation-toggle", "compass" ];
+
+			          			currentPhotos[len-1].parentElement.style.transform = "none";
+					        	placeDescSpan.style.display = "none";
+
+					        	button_play.disabled = false;
+					        	button_play.addEventListener("click", buttonPlayPress);
+
+					        	tabsEvent.removeEventListener("click", stopPropagation, true);
+
+					        	mapRow.removeEventListener("click", stopPropagation, true);
+
+					        	layer.popupEnabled = true;
+
+					        	for (let i = 0, len = figures.length; i < len; i++) {
+						    		let fig = figures[i];
+						    		fig.addEventListener( "mouseover", scaleFig );
+									fig.addEventListener( "mouseout", unScaleFig );
+						    	}/**/
+
+						    	$( "#tabs" ).tabs("enable");
+
+						    	setProgress(0);
+
+						    	divProgress.style.display = "none";
+
+						}, z+1000);
+
+			        })
+			      	
+			    }
+
+				button_play.addEventListener("click", buttonPlayPress);
+				
+			});
+
+		</script>
+	</body>
+</html>
